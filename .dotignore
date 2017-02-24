@@ -8,4 +8,4 @@ changelog.*
 .gitignore
 tags
 .gitmodules
-@dots_
+@dots_*
