@@ -1,5 +1,16 @@
+# GIT DIRS
+
+* common:
+    git clone git@github.com:petonic/config.git
+
+* RPI:
+    git clone git@github.com:petonic/config-rpi.git
+
+
 Dotfiler — the ultimate solution for managing dotfiles!
 =======================================================
+
+
 
 [![changelog](http://allmychanges.com/p/python/dotfiler/badge/)](http://allmychanges.com/p/python/dotfiler/?utm_source=badge)
 
@@ -32,29 +43,29 @@ your `PATH`.
 How does it work
 ----------------
 
-From user's point of view — very simple. You just create a separate subdirectories, called "environments", put configs there and run `dot update`. Dotfiler will make all necessary symlinks automagickally. **What makes dotfiler better, than other solutions?** It's ability to merge files from different environments into one target dir. I'll give you example for a better understanding. 
+From user's point of view — very simple. You just create a separate subdirectories, called "environments", put configs there and run `dot update`. Dotfiler will make all necessary symlinks automagickally. **What makes dotfiler better, than other solutions?** It's ability to merge files from different environments into one target dir. I'll give you example for a better understanding.
 
 Suppose, you have a `~/.zshrc` which sources all configs from `~/.zsh/`. And you want to separate every-day configs from the configs only needed on machines at your daily-job. In most config managers you will end upwith two separate repositories sharing part of zsh config. But dotfiler allows you to make a much clever thing — to separate zsh (actually any other configs too, if they may understand `include` instruction) into the different environments.
 
-In this example, first environment, let's call it `base`, will contain file `base/.zsh/generic`. Second environment, called `atwork`, will have `atwork/.zsh/secret-settings`. Both of them, off cause could include other files, not only zsh configs. And most importantly, these environment now could be stored separately and installed to each machine separately. What does it meean? Right! Now, you could share you generic everyday configs on the GitHub, but keep daily-job's configs in a dry-n-safe-secret-private-repository. 
+In this example, first environment, let's call it `base`, will contain file `base/.zsh/generic`. Second environment, called `atwork`, will have `atwork/.zsh/secret-settings`. Both of them, off cause could include other files, not only zsh configs. And most importantly, these environment now could be stored separately and installed to each machine separately. What does it meean? Right! Now, you could share you generic everyday configs on the GitHub, but keep daily-job's configs in a dry-n-safe-secret-private-repository.
 
 There is a way to add new environments using `dot add <url> <url>...`. Probably the process of adding environments on a fresh machine will be even more improved, when I introduce a concept of the meta-environments, which will make it possible to make one env depends on few another and to pull them during `dot add` procedure.
 
 Get involved
 ------------
 
-Don't hesitate to try dotfiler. Just install it and make your configs more structured.  Extract useful ones and share them in the GitHub, as I did. Then send me a link with a short description (or make a pull request), and I'll add you repositories to the end of this page. 
+Don't hesitate to try dotfiler. Just install it and make your configs more structured.  Extract useful ones and share them in the GitHub, as I did. Then send me a link with a short description (or make a pull request), and I'll add you repositories to the end of this page.
 
-Dotfiler was developed in TDD, it's core functionality is fully tested, but that doesn't mean there isn't bugs. If you have found one, file the issue, or better, try to write a test for the use case, fix it and send as a pull request. To run all tests, install nose and run `nosetests bin/lib/dot`. 
+Dotfiler was developed in TDD, it's core functionality is fully tested, but that doesn't mean there isn't bugs. If you have found one, file the issue, or better, try to write a test for the use case, fix it and send as a pull request. To run all tests, install nose and run `nosetests bin/lib/dot`.
 
 More technical details
 ----------------------
 
-If you are wondering, how does dotfiler work inside, I'll tell you. 
+If you are wondering, how does dotfiler work inside, I'll tell you.
 
-First of all, it walks through all files and all environments collecting all dirs, mentioned in more than one environment and files. If file with same filename exits in few environments, this is an error and `dot` will tell you they are conflicting. 
+First of all, it walks through all files and all environments collecting all dirs, mentioned in more than one environment and files. If file with same filename exits in few environments, this is an error and `dot` will tell you they are conflicting.
 
-Having this dirs/files tree, it generates pairs source — target, where source is a file inside the environment dir and target is where it should be in your home dir. 
+Having this dirs/files tree, it generates pairs source — target, where source is a file inside the environment dir and target is where it should be in your home dir.
 
 After this data is ready, `dot` generates one or more actions for each pair. Actions could be `rm`, `mkdir`, `link`, `already-linked` and `error`. Which action will be generated, depends on the current file system's state and previously generated actions. Here is a simple example:
 
@@ -187,6 +198,5 @@ Environments
 * [svetlyak40wt/dot-osx](https://github.com/svetlyak40wt/dot-osx) — OSX keybindings and settings.
 * [svetlyak40wt/dot-python-dev](https://github.com/svetlyak40wt/dot-python-dev) – emacs, zsh and pudb settings for Python developement.
 * [svetlyak40wt/dot-growl](https://github.com/svetlyak40wt/dot-growl) – A helper to use growl notifications from ssh sessions.
-* [svetlyak40wt/dot-lisp](https://github.com/svetlyak40wt/dot-lisp) – Dotfiler's config for Lisp development. 
+* [svetlyak40wt/dot-lisp](https://github.com/svetlyak40wt/dot-lisp) – Dotfiler's config for Lisp development.
 * [svetlyak40wt/dot-osbench](https://github.com/svetlyak40wt/dot-osbench) – A helper to setup PATH to [OSBench's](https://github.com/svetlyak40wt/osbench) bin directory.
-
