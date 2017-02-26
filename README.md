@@ -12,6 +12,12 @@ git clone git@github.com:petonic/dotfiler.git .dotfiles
 Instal, ZSH and supporting packages if necessary
 
 ```
+
+# Install python-dev as a pre-req, if necessary
+# Might take a long time on an RPI...
+sudo apt-get -y install python-dev
+
+# Now install zsh
 sudo apt-get -y install zsh
 
 # Set login shell to zsh
