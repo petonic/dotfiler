@@ -212,6 +212,7 @@ def create_install_actions(base_dir, home_dir, tree, filesystem):
                        walk(children, prefix=new_prefix))
 
     def process(path, envs, alternatives):
+        global force        # -f flag
         if len(envs) > 1:
             push_action('error', 'File {0} exists in more then one environments: {1}'.format(
                 os.path.join(*path), ', '.join(envs)))
@@ -294,7 +295,13 @@ def create_install_actions(base_dir, home_dir, tree, filesystem):
                             for params in alternatives:
                                 process(*params)
                         else:
-                            push_action('error', 'File {0} already exists, can\'t make symlink instead of it.'.format(target))
+                            if force:
+                                log_verbose('Forcing (-f) overwrite of {target}'.format(
+                                    target=target))
+                                push_action('rm', target)
+                                push_action('link', source, target)
+                            else:
+                                push_action('error', 'File {0} already exists1, can\'t make symlink instead of it.'.format(target))
 
 
 
@@ -304,7 +311,7 @@ def create_install_actions(base_dir, home_dir, tree, filesystem):
                     # если сам файл не является симлинком, то это ошибка
                     if not vfs.is_symlink(target):
                         # TODO: REMOVE
-                        push_action('error', 'File {0} already exists, can\'t make symlink instead of it.'.format(target))
+                        push_action('error', 'File {0} already exists2, can\'t make symlink instead of it.'.format(target))
                     else:
                         symlink_target = vfs.get_symlink_target(target)
                         if symlink_target.startswith(base_dir):
@@ -355,11 +362,15 @@ def create_actions_to_remove_broken_symlinks(created_links, fs):
     """Removes dangling symlinks, created during previous 'dot update' calls.
     This could happen when you remove or rename some file in the environment.
     """
+    global force
     results = []
+
+    #    and (fs.is_symlink(source) or force)
+
 
     for source, target in created_links.items():
         if fs.exists(source) \
-           and fs.is_symlink(source) \
+           and fs.is_symlink(source)  \
            and fs.realpath(source) == target \
            and not fs.exists(target):
             results.append(('rm', source))
@@ -402,11 +413,14 @@ def make_pull(base_dir, env):
     finally:
         os.chdir(pwd)
 
+force = False
 
 def update(base_dir, home_dir, args,
             processor=None,
             tree_builder=None):
+    global force
     dry_run = args['--dry']
+    force = args['--force']
     envs = _get_envs(base_dir)
 
     if not args['--skip-pull']:
