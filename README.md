@@ -9,7 +9,7 @@ git clone git@github.com:petonic/dotfiler.git .dotfiles
 
 ### Install zsh on RPI if necessary
 ```
-sudo apt-get zsh
+sudo apt-get install zsh
 
 # Set login shell to zsh
 chsh -s $(which zsh)
