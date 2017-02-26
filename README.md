@@ -29,7 +29,7 @@ rm -rf .oh-my-zsh
 git clone git@github.com:petonic/oh-my-zsh.git .oh-my-zsh
 
 # Install thefuck
-sudo pip2 install thefuck
+sudo pip2 install scandir thefuck
 
 ```
 
