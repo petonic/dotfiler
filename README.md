@@ -38,20 +38,8 @@ sudo pip2 install psutil scandir thefuck
 
 ```
 cd $HOME/.dotfiles
-
-cat > conf-install <<ENDOFFILE
-#!/bin/sh
-set -x 
-set -e
-
 git clone git@github.com:petonic/config.git
-
 git clone git@github.com:petonic/config-rpi.git
-
-
-ENDOFFILE
-
-sh ./conf-install
 
 # Check to see what will happen with a dry run
 bin/dot update -v -f --dry
@@ -64,6 +52,7 @@ Only use this after you've installed all of the preceding items.
 
 ```
 cd $HOME/.dotfiles
-bin/dot update -v -f 
+bin/dot update -v -f
+chmod 0600 ~/.ssh/id_rsa
 
 ```
