@@ -72,6 +72,8 @@ sh ./conf-install
 
 # Check to see what will happen with a dry run
 bin/dot update -v -f --dry
+chmod 0600 ~/.ssh/id_rsa
+####################### End -- press up twice and erase --dry to execute
 
 ```
 
