@@ -1,10 +1,27 @@
 # Reconfigured on 2017-02-21 to use dotfiler from (git@github.com:svetlyak40wt/dotfiler.git)
 
+### Reinstallation over old dotfiles setup.
+
+If you're reinstalling the dotfiles from github, then you'll want to do the following:
+
+```bash
+
+# Copy the contents of the .ssh/id_rsa* files to be their contents
+# instead of symbolic links.
+cd $HOME/.ssh; for i in id_rsa*; do cat $i > out; mv out $i; done; chmod 0600 id_rsa
+
+# Blow away the old .dotfiles directory
+cd $HOME
+rm -rf .dotfiles
+
+```
 To start with, install dotfiler in ~/.dotfiles with
 
 ```bash
+
 cd $HOME
 git clone git@github.com:petonic/dotfiler.git .dotfiles
+
 ```
 
 ### Install zsh on RPI if necessary
@@ -41,7 +58,7 @@ cd $HOME/.dotfiles
 
 cat > conf-install <<ENDOFFILE
 #!/bin/sh
-set -x 
+set -x
 set -e
 
 git clone git@github.com:petonic/config.git
@@ -64,6 +81,6 @@ Only use this after you've installed all of the preceding items.
 
 ```
 cd $HOME/.dotfiles
-bin/dot update -v -f 
+bin/dot update -v -f
 
 ```
