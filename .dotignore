@@ -9,4 +9,5 @@ changelog.*
 tags
 .gitmodules
 @dots_*
+.AppleDouble/
 install.bash
