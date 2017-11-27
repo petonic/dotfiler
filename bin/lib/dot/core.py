@@ -81,7 +81,7 @@ def processor_real(actions, created_links, fs):
 
 def processor_dry(actions, created_links, fs):
     mapping = {'mkdir': (log_mkdir, 'Directory {0} will be created'),
-               'link': (log_link, 'Symlink from  {1} to {0} will be created'),
+               'link': (log_link, 'Symlink from {1} to {0} will be created'),
                'already-linked': (
                    log_verbose, 'Symlink from {1} to {0} already exists'),
                'error': (log_error, '{0}'),
@@ -139,6 +139,8 @@ def create_tree_from_filesystem(base_dir, envs):
     # read ignored files from file.
     ignored_files_config = os.path.join(base_dir, '.dotignore')
     ignored_files = []
+    from socket import gethostname;
+    short_hostname=gethostname()
 
     if os.path.isfile(ignored_files_config):
         with open(ignored_files_config) as f:
@@ -150,6 +152,9 @@ def create_tree_from_filesystem(base_dir, envs):
 
     ignored_files = '(' + "|".join(ignored_files) + ')$' #format for regex
     ignored_files_re = re.compile(ignored_files, re.I)
+    # Has to have chars after '.' to be valid
+    hostspec_patt = ".*host-(\w+)\..+$"
+    hostspec_re = re.compile(hostspec_patt, re.I)
 
     base_dir_len = len(base_dir)
     text = u''
@@ -161,7 +166,20 @@ def create_tree_from_filesystem(base_dir, envs):
             files[:] = [f for f in files if ignored_files_re.match(f) is None]
 
             for filename in files:
+                mo = hostspec_re.match(filename)
+                if mo:
+                    if short_hostname != mo.group(1):
+                        # Skip the file because the hostname is wrong
+                        log_verbose('--- Skipping host-specific {}'.format(
+                                filename))
+                        continue
+                    log_verbose('+++ Including host-specific {}'.format(
+                            os.path.join(root, filename).decode('utf-8')))
+
                 full_path = os.path.join(root, filename).decode('utf-8')
+                # PET: Check if pattern is ".*host-<short-host>\.". If so, and
+                # if the hostname doesn't match, skip it.
+
                 text += full_path[base_dir_len + 1:]
                 text += u'\n'
 
