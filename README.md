@@ -32,10 +32,10 @@ Instal, ZSH and supporting packages if necessary
 
 # Install python-dev as a pre-req, if necessary
 # Might take a long time on an RPI...
-sudo apt-get -y install python-dev
+sudo apt-get -y install -y python-dev
 
 # Now install zsh
-sudo apt-get -y install zsh
+sudo apt-get -y install -y zsh
 
 # Set login shell to zsh
 sudo chsh -s $(which zsh)
@@ -55,7 +55,6 @@ sudo pip2 install psutil scandir thefuck
 
 ```
 cd $HOME/.dotfiles
-||||||| merged common ancestors
 
 cat > conf-install <<ENDOFFILE
 #!/bin/sh
@@ -87,9 +86,5 @@ Only use this after you've installed all of the preceding items.
 cd $HOME/.dotfiles
 bin/dot update -v -f
 chmod 0600 ~/.ssh/id_rsa
-||||||| merged common ancestors
 bin/dot update -v -f
-=======
-bin/dot update -v -f
-
 ```
